@@ -118,7 +118,7 @@ def draw_pill(c, x, y, w, text, fill, text_color=INK):
 def draw_page_one(c: canvas.Canvas, data: dict):
     c.setFillColor(BG)
     c.rect(0, 0, W, H, stroke=0, fill=1)
-    draw_header(c, data.get("project_label", "RUNCPM REVIEW"), "REQUEST + OVERVIEW")
+    draw_header(c, data.get("project_label", "TASK REVIEW"), "REQUEST + OVERVIEW")
 
     c.setFillColor(PINK)
     c.setFont("Helvetica-Bold", 8.5)
@@ -195,7 +195,7 @@ def draw_content_page(c: canvas.Canvas, page_num: int, data: dict, item: dict):
     accent = GREEN if is_solution else PINK
     light = MINT_LIGHT if is_solution else PINK_LIGHT
     label = "SOLUTION" if is_solution else "PROBLEM"
-    draw_header(c, data.get("project_label", "RUNCPM REVIEW"), label)
+    draw_header(c, data.get("project_label", "TASK REVIEW"), label)
 
     c.setFillColor(accent)
     c.setFont("Helvetica-Bold", 8.5)
@@ -244,7 +244,7 @@ def draw_content_page(c: canvas.Canvas, page_num: int, data: dict, item: dict):
 def draw_final_page(c: canvas.Canvas, page_num: int, data: dict):
     c.setFillColor(BG)
     c.rect(0, 0, W, H, stroke=0, fill=1)
-    draw_header(c, data.get("project_label", "RUNCPM REVIEW"), "FINAL LINKS")
+    draw_header(c, data.get("project_label", "TASK REVIEW"), "FINAL LINKS")
     c.setFillColor(INK)
     c.setFont("Helvetica-Bold", 30)
     c.drawString(54, H - 112, "Final links")

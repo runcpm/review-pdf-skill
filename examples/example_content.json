@@ -1,6 +1,6 @@
 {
   "title": "Example Review PDF",
-  "project_label": "RUNCPM REVIEW",
+  "project_label": "TASK REVIEW",
   "summary": "Review the request, show the main issue, and turn the fix into a clear visual handoff.",
   "voice_url": "https://example.com/voice-note",
   "resources_url": "https://example.com/resources",
