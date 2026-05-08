@@ -25,13 +25,31 @@ This skill depends on these workflows:
    - Set anyone-reader permission.
    - Return a Drive share link.
 
-3. Task-specific input skills as needed:
+3. Voice/audio tools
+   - Link existing voice notes on Page 1 and every footer.
+   - Use page-specific voice-note links when available.
+   - Use `text_to_speech` when the user asks for a generated voice note.
+
+4. Web/internet tools
+   - Use `web_search` and `web_extract` for current facts, online evidence, sources, market research, docs, and public pages.
+
+5. Browser/vision tools
+   - Use browser tools for website/app flows and screenshots.
+   - Use `vision_analyze` for screenshots, Page 1 crops, footer crops, and full contact-sheet QA.
+
+6. Telegram delivery
+   - Deliver the final PDF natively with `MEDIA:/opt/data/file.pdf`.
+   - Send supporting files only when requested.
+
+7. Task-specific input skills as needed:
    - Website/app audit: browser QA / dogfood / screenshots.
    - Code review: GitHub/codebase/code-review skills.
    - Social/video analysis: TikTok/Instagram/YouTube/video skills.
    - Document review: OCR/PDF/document extraction skills.
    - Research: web/research skills.
    - Drive asset management: Google Drive asset library/tracker skills.
+
+See `docs/hermes-integration-map.md` in the public repo for the full skill/tool dependency map.
 
 Always gather the task evidence first, then build the review PDF.
 

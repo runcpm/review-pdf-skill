@@ -45,6 +45,7 @@ The deck should look like this concept:
 - `examples/example_content.json` — example content payload for the reference generator
 - `docs/visual-spec.md` — detailed visual rules
 - `docs/how-to-use.md` — usage guide for agents/users
+- `docs/hermes-integration-map.md` — every Hermes skill/tool area needed for the full workflow: Google/Drive, voice, internet search, Telegram, browser QA, code review, social/video, OCR/docs, and visual QA
 
 ## How to use in Hermes
 
@@ -93,15 +94,24 @@ The generated PDF is intentionally generic, but it demonstrates:
 
 ## Required related skills
 
-Use these alongside `review-pdf-skill` depending on the task:
+Use these alongside `review-pdf-skill` depending on the task. See `docs/hermes-integration-map.md` for the full dependency map.
 
-- `create-deliver-pdf` — PDF generation, validation, Telegram delivery, visual QA
-- `google-workspace` — Drive upload/share link
+Always/usually needed:
+
+- `create-deliver-pdf` — PDF generation, validation, Telegram `MEDIA:/...pdf` delivery, and visual QA
+- `google-workspace` — Google Drive upload/share links and asset storage
+- Voice/audio tools — existing voice-note links, page-specific voice links, or `text_to_speech` when a generated voice note is requested
+- Telegram delivery — native PDF/file delivery through `MEDIA:/opt/data/...pdf`
+- Vision QA — Page 1 crop, footer crop, and full contact sheet review
+
+Task-specific input skills:
+
 - browser/dogfood skills — website/app QA
+- web/research skills — internet search, current facts, online evidence
 - GitHub/code-review skills — code or repo review PDFs
 - OCR/document skills — PDF/image/document reviews
 - social/video skills — TikTok/Instagram/YouTube/video breakdown PDFs
-- research/web skills — fact-grounded research review PDFs
+- Google Drive asset library/tracker skills — organize final PDFs, voice notes, screenshots, and assets
 
 ## Delivery format
 
