@@ -4,7 +4,7 @@
 Usage:
     python scripts/render_review_pdf.py examples/example_content.json /tmp/review.pdf
 
-This is a reusable starting point for the final RunCPM review PDF concept.
+This is a reusable starting point for the final review PDF template concept.
 It intentionally keeps copy minimal and uses the standard Page 1 overview card,
 pink problem pages, green solution pages, and minimal clickable footer.
 """

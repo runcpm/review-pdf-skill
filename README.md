@@ -1,6 +1,6 @@
 # review-pdf-skill
 
-A reusable Hermes skill for producing consistent, polished review PDFs in the same visual style as the final RunCPM / Claw Clips review deck.
+A reusable Hermes skill for producing consistent, polished review PDFs in the same visual style as the final template.
 
 The goal is simple: a user can say what they want reviewed, audited, summarized, or handed off, and the agent produces the same clean PDF concept every time.
 

@@ -1,12 +1,12 @@
 ---
 name: review-pdf-skill
-description: "Create a consistent polished review PDF for any task/request using the final RunCPM Claw Clips review deck style: visual-first, minimal text, polished overview card, minimal clickable footer, Drive delivery, and full visual QA."
+description: "Create a consistent polished review PDF for any task/request using the final template style: visual-first, minimal text, polished overview card, minimal clickable footer, Drive delivery, and full visual QA."
 version: 1.0.0
 ---
 
 # Review PDF Skill
 
-Use this skill whenever a user wants a polished final PDF review, audit, report, handoff, checklist, UX review, product review, website/app test report, campaign review, or task summary that should have the same consistent visual concept as the final Claw Clips deck.
+Use this skill whenever a user wants a polished final PDF review, audit, report, handoff, checklist, UX review, product review, website/app test report, campaign review, or task summary that should have the same consistent visual concept as the final template.
 
 The core promise: anyone can say what they want reviewed or turned into a final PDF, and the output should follow the same visual system every time.
 
@@ -55,7 +55,7 @@ Always gather the task evidence first, then build the review PDF.
 
 ## Visual Style Contract
 
-Match the final RunCPM / Claw Clips review deck style:
+Match the final template review deck style:
 
 - Warm off-white/cream page background.
 - Large bold black titles.
@@ -252,7 +252,7 @@ Do not deliver until all pass:
 - PDF starts with `%PDF`.
 - Drive link works / file has reader permission.
 
-## Common Fixes Learned From The Final Claw Clips Iteration
+## Common Fixes Learned From The Final Template Iteration
 
 - If Page 1 heading + audio link feel crowded, put audio in row 1 instead of floating near the heading.
 - If footer feels too heavy, remove all labels and containers; keep only `Voice note | Resources` with icons.
