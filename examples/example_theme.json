@@ -1,0 +1,22 @@
+{
+  "name": "default-template-theme",
+  "description": "Default colors/fonts for the review PDF template. Change values here to rebrand the deck while keeping the same layout and QA standard.",
+  "fonts": {
+    "regular": "Helvetica",
+    "bold": "Helvetica-Bold"
+  },
+  "colors": {
+    "background": "#F8F4EF",
+    "ink": "#090909",
+    "muted": "#6C7480",
+    "link": "#1E70CD",
+    "problem": "#FF5B92",
+    "problem_light": "#FFE7EE",
+    "solution": "#14AB67",
+    "solution_light": "#E2F8EE",
+    "card": "#FFFFFF",
+    "border": "#DFE4EB",
+    "row_background": "#FCFCFC",
+    "row_border": "#EDF0F5"
+  }
+}

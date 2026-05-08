@@ -46,6 +46,8 @@ The deck should look like this concept:
 - `docs/visual-spec.md` — detailed visual rules
 - `docs/how-to-use.md` — usage guide for agents/users
 - `docs/hermes-integration-map.md` — every Hermes skill/tool area needed for the full workflow: Google/Drive, voice, internet search, Telegram, browser QA, code review, social/video, OCR/docs, and visual QA
+- `docs/theme-customization.md` — easy color/font customization while keeping the same template output
+- `examples/example_theme.json` — default editable color/font theme
 
 ## How to use in Hermes
 
@@ -80,6 +82,9 @@ python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 python scripts/render_review_pdf.py examples/example_content.json /tmp/example_review_pdf.pdf
+
+# Optional: use an editable color/font theme
+python scripts/render_review_pdf.py examples/example_content.json /tmp/example_review_pdf.pdf --theme examples/example_theme.json
 ```
 
 The generated PDF is intentionally generic, but it demonstrates:
@@ -90,7 +95,19 @@ The generated PDF is intentionally generic, but it demonstrates:
 - final links page
 - minimal footer
 - clickable links
-- external-link icon style
+- External-link icon style
+
+## Custom colors and fonts
+
+The visual structure should stay the same, but users can rebrand the deck by editing `examples/example_theme.json` or passing their own theme file.
+
+Allowed customizations:
+
+- colors
+- regular font
+- bold font
+
+Do not change the layout contract unless creating a new template. The output should still keep the same Page 1 overview card, problem/solution pages, minimal footer, clickable links, and full QA flow.
 
 ## Required related skills
 

@@ -78,6 +78,37 @@ Match the final template review deck style:
 - No internal/process wording such as `converted into template`, `PDF conversion`, or `Quick Overview`.
 - No extra blank containers below cards.
 
+## Theme Customization
+
+The output layout must stay the same, but colors and fonts may be changed for different users/brands.
+
+Allowed changes:
+- background color.
+- ink/text color.
+- muted/body text color.
+- link color.
+- problem color and light problem badge color.
+- solution color and light solution badge color.
+- card, border, row background, and row border colors.
+- regular font and bold font.
+
+Do not change:
+- Page 1 structure.
+- `What this document says` card.
+- row-card structure.
+- problem/solution page pattern.
+- minimal no-container footer.
+- external-link icon concept.
+- QA process.
+
+If using the public repo reference renderer, pass a theme file:
+
+```bash
+python scripts/render_review_pdf.py examples/example_content.json /tmp/example_review_pdf.pdf --theme examples/example_theme.json
+```
+
+After any color/font change, run the same visual QA. Reject the PDF if contrast is weak, fonts clip, or it no longer feels like the same final template.
+
 ## Page 1 Required Layout
 
 Page 1 should always be the request + overview page.

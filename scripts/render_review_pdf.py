@@ -3,6 +3,7 @@
 
 Usage:
     python scripts/render_review_pdf.py examples/example_content.json /tmp/review.pdf
+    python scripts/render_review_pdf.py examples/example_content.json /tmp/review.pdf --theme examples/example_theme.json
 
 This is a reusable starting point for the final review PDF template concept.
 It intentionally keeps copy minimal and uses the standard Page 1 overview card,
@@ -22,24 +23,74 @@ from reportlab.pdfgen import canvas
 
 W, H = LETTER
 
-BG = colors.Color(248 / 255, 244 / 255, 239 / 255)
-INK = colors.Color(9 / 255, 9 / 255, 9 / 255)
-MUTED = colors.Color(108 / 255, 116 / 255, 128 / 255)
-BLUE = colors.Color(30 / 255, 112 / 255, 205 / 255)
-PINK = colors.Color(1, 91 / 255, 146 / 255)
-PINK_LIGHT = colors.Color(1, 231 / 255, 238 / 255)
-GREEN = colors.Color(20 / 255, 171 / 255, 103 / 255)
-MINT_LIGHT = colors.Color(226 / 255, 248 / 255, 238 / 255)
-BORDER = colors.Color(223 / 255, 228 / 255, 235 / 255)
-ROW_BG = colors.Color(252 / 255, 252 / 255, 252 / 255)
-ROW_BORDER = colors.Color(237 / 255, 240 / 255, 245 / 255)
+DEFAULT_THEME = {
+    "fonts": {
+        "regular": "Helvetica",
+        "bold": "Helvetica-Bold",
+    },
+    "colors": {
+        "background": "#F8F4EF",
+        "ink": "#090909",
+        "muted": "#6C7480",
+        "link": "#1E70CD",
+        "problem": "#FF5B92",
+        "problem_light": "#FFE7EE",
+        "solution": "#14AB67",
+        "solution_light": "#E2F8EE",
+        "card": "#FFFFFF",
+        "border": "#DFE4EB",
+        "row_background": "#FCFCFC",
+        "row_border": "#EDF0F5",
+    },
+}
+
+REG_FONT = DEFAULT_THEME["fonts"]["regular"]
+BOLD_FONT = DEFAULT_THEME["fonts"]["bold"]
+BG = colors.HexColor(DEFAULT_THEME["colors"]["background"])
+INK = colors.HexColor(DEFAULT_THEME["colors"]["ink"])
+MUTED = colors.HexColor(DEFAULT_THEME["colors"]["muted"])
+BLUE = colors.HexColor(DEFAULT_THEME["colors"]["link"])
+PINK = colors.HexColor(DEFAULT_THEME["colors"]["problem"])
+PINK_LIGHT = colors.HexColor(DEFAULT_THEME["colors"]["problem_light"])
+GREEN = colors.HexColor(DEFAULT_THEME["colors"]["solution"])
+MINT_LIGHT = colors.HexColor(DEFAULT_THEME["colors"]["solution_light"])
+CARD = colors.HexColor(DEFAULT_THEME["colors"]["card"])
+BORDER = colors.HexColor(DEFAULT_THEME["colors"]["border"])
+ROW_BG = colors.HexColor(DEFAULT_THEME["colors"]["row_background"])
+ROW_BORDER = colors.HexColor(DEFAULT_THEME["colors"]["row_border"])
+
+
+def apply_theme(theme: dict | None) -> None:
+    """Apply a color/font theme while preserving the same template layout."""
+    if not theme:
+        return
+    merged = json.loads(json.dumps(DEFAULT_THEME))
+    for section in ("fonts", "colors"):
+        merged[section].update(theme.get(section, {}))
+
+    global REG_FONT, BOLD_FONT, BG, INK, MUTED, BLUE, PINK, PINK_LIGHT, GREEN, MINT_LIGHT, CARD, BORDER, ROW_BG, ROW_BORDER
+    REG_FONT = merged["fonts"]["regular"]
+    BOLD_FONT = merged["fonts"]["bold"]
+    c = merged["colors"]
+    BG = colors.HexColor(c["background"])
+    INK = colors.HexColor(c["ink"])
+    MUTED = colors.HexColor(c["muted"])
+    BLUE = colors.HexColor(c["link"])
+    PINK = colors.HexColor(c["problem"])
+    PINK_LIGHT = colors.HexColor(c["problem_light"])
+    GREEN = colors.HexColor(c["solution"])
+    MINT_LIGHT = colors.HexColor(c["solution_light"])
+    CARD = colors.HexColor(c["card"])
+    BORDER = colors.HexColor(c["border"])
+    ROW_BG = colors.HexColor(c["row_background"])
+    ROW_BORDER = colors.HexColor(c["row_border"])
 
 
 def tw(text: str, font: str, size: float) -> float:
     return pdfmetrics.stringWidth(text, font, size)
 
 
-def draw_round_rect(c: canvas.Canvas, x, y, w, h, r=18, fill=colors.white, stroke=BORDER, sw=0.7):
+def draw_round_rect(c: canvas.Canvas, x, y, w, h, r=18, fill=CARD, stroke=BORDER, sw=0.7):
     c.setStrokeColor(stroke)
     c.setLineWidth(sw)
     c.setFillColor(fill)
@@ -65,7 +116,7 @@ def draw_external_link_icon(c: canvas.Canvas, x, y, size=10, color=BLUE, bg=None
 def draw_footer(c: canvas.Canvas, page_num: int, voice_url: str | None, resources_url: str | None):
     # Page number
     c.setFillColor(INK)
-    c.setFont("Helvetica", 9)
+    c.setFont(REG_FONT, 9)
     c.drawString(54, 35, str(page_num))
 
     # Minimal centered footer links, no container.
@@ -76,7 +127,7 @@ def draw_footer(c: canvas.Canvas, page_num: int, voice_url: str | None, resource
     gap = 4.2
     item_gap = 16
     sep = 8
-    total = icon + gap + tw(label1, "Helvetica", fs) + item_gap + sep + item_gap + icon + gap + tw(label2, "Helvetica", fs)
+    total = icon + gap + tw(label1, REG_FONT, fs) + item_gap + sep + item_gap + icon + gap + tw(label2, REG_FONT, fs)
     x = (W - total) / 2
     y = 35
 
@@ -84,9 +135,9 @@ def draw_footer(c: canvas.Canvas, page_num: int, voice_url: str | None, resource
         draw_external_link_icon(c, ix, y - 1, size=icon, bg=BG, lw=0.95)
         tx = ix + icon + gap
         c.setFillColor(BLUE)
-        c.setFont("Helvetica", fs)
+        c.setFont(REG_FONT, fs)
         c.drawString(tx, y, label)
-        end = tx + tw(label, "Helvetica", fs)
+        end = tx + tw(label, REG_FONT, fs)
         if url:
             c.linkURL(url, (ix - 2, y - 4, end + 3, y + 11), relative=0)
         return end
@@ -101,7 +152,7 @@ def draw_footer(c: canvas.Canvas, page_num: int, voice_url: str | None, resource
 
 def draw_header(c: canvas.Canvas, left: str, right: str):
     c.setFillColor(colors.Color(110 / 255, 116 / 255, 128 / 255))
-    c.setFont("Helvetica-Bold", 9)
+    c.setFont(BOLD_FONT, 9)
     c.drawString(54, H - 32, left.upper())
     c.drawRightString(W - 54, H - 32, right.upper())
 
@@ -111,7 +162,7 @@ def draw_pill(c, x, y, w, text, fill, text_color=INK):
     c.setStrokeColor(fill)
     c.roundRect(x, y, w, 27, 13.5, stroke=0, fill=1)
     c.setFillColor(text_color)
-    c.setFont("Helvetica-Bold", 8.3)
+    c.setFont(BOLD_FONT, 8.3)
     c.drawCentredString(x + w / 2, y + 9.2, text)
 
 
@@ -121,14 +172,14 @@ def draw_page_one(c: canvas.Canvas, data: dict):
     draw_header(c, data.get("project_label", "TASK REVIEW"), "REQUEST + OVERVIEW")
 
     c.setFillColor(PINK)
-    c.setFont("Helvetica-Bold", 8.5)
+    c.setFont(BOLD_FONT, 8.5)
     c.drawString(54, H - 68, "REQUEST")
 
     c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 31)
+    c.setFont(BOLD_FONT, 31)
     c.drawString(54, H - 113, data.get("title", "Review PDF"))
 
-    c.setFont("Helvetica", 12.5)
+    c.setFont(REG_FONT, 12.5)
     summary = data.get("summary", "Review the request, show the main issue, and provide dev-ready fixes.")
     c.drawString(54, H - 154, summary[:92])
 
@@ -140,12 +191,12 @@ def draw_page_one(c: canvas.Canvas, data: dict):
     x, y, w, h = 60, 268, 492, 266
     c.setFillColor(colors.Color(0, 0, 0, alpha=0.045))
     c.roundRect(x + 2, y - 3, w, h, 18, stroke=0, fill=1)
-    draw_round_rect(c, x, y, w, h, r=18, fill=colors.white, stroke=BORDER, sw=0.65)
+    draw_round_rect(c, x, y, w, h, r=18, fill=CARD, stroke=BORDER, sw=0.65)
 
     c.setFillColor(PINK)
     c.roundRect(x + 18, y + h - 22, 40, 4, 2, stroke=0, fill=1)
     c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 20)
+    c.setFont(BOLD_FONT, 20)
     c.drawString(x + 18, y + h - 53, "What this document says")
 
     rows = data.get("overview_rows") or []
@@ -165,22 +216,22 @@ def draw_page_one(c: canvas.Canvas, data: dict):
         c.setFillColor(circle)
         c.circle(row_x + 18, ry + row_h / 2, 12.5, stroke=0, fill=1)
         c.setFillColor(INK)
-        c.setFont("Helvetica-Bold", 8.2)
+        c.setFont(BOLD_FONT, 8.2)
         c.drawCentredString(row_x + 18, ry + row_h / 2 - 3.2, str(i + 1))
-        c.setFont("Helvetica-Bold", 11.5)
+        c.setFont(BOLD_FONT, 11.5)
         c.drawString(label_x, ry + 12.4, row.get("label", "Item"))
         if row.get("type") == "link":
             draw_external_link_icon(c, value_x, ry + 12.2, size=11, bg=ROW_BG, lw=1.05)
             c.setFillColor(BLUE)
-            c.setFont("Helvetica", 9.2)
+            c.setFont(REG_FONT, 9.2)
             label = row.get("value", "Click to review")
             c.drawString(value_x + 16.5, ry + 12.6, label)
             url = data.get("voice_url") or data.get("resources_url")
             if url:
-                c.linkURL(url, (value_x - 3, ry + 6, value_x + 16.5 + tw(label, "Helvetica", 9.2) + 4, ry + 29), relative=0)
+                c.linkURL(url, (value_x - 3, ry + 6, value_x + 16.5 + tw(label, REG_FONT, 9.2) + 4, ry + 29), relative=0)
         else:
             c.setFillColor(MUTED)
-            c.setFont("Helvetica", 9.2)
+            c.setFont(REG_FONT, 9.2)
             c.drawString(value_x, ry + 12.7, row.get("value", ""))
 
     draw_footer(c, 1, data.get("voice_url"), data.get("resources_url"))
@@ -198,30 +249,30 @@ def draw_content_page(c: canvas.Canvas, page_num: int, data: dict, item: dict):
     draw_header(c, data.get("project_label", "TASK REVIEW"), label)
 
     c.setFillColor(accent)
-    c.setFont("Helvetica-Bold", 8.5)
+    c.setFont(BOLD_FONT, 8.5)
     c.drawString(54, H - 68, label)
 
     c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 30)
+    c.setFont(BOLD_FONT, 30)
     c.drawString(54, H - 113, item.get("title", "Page title"))
 
     c.setFillColor(INK)
-    c.setFont("Helvetica", 12.5)
+    c.setFont(REG_FONT, 12.5)
     c.drawString(54, H - 154, item.get("body", "One clear sentence explains this page."))
 
     # Main action card.
     x, y, w, h = 70, 238, 472, 310
     c.setFillColor(colors.Color(0, 0, 0, alpha=0.04))
     c.roundRect(x + 2, y - 3, w, h, 22, stroke=0, fill=1)
-    draw_round_rect(c, x, y, w, h, r=22, fill=colors.white, stroke=BORDER, sw=0.65)
+    draw_round_rect(c, x, y, w, h, r=22, fill=CARD, stroke=BORDER, sw=0.65)
     c.setFillColor(light)
     c.roundRect(x + 24, y + h - 76, 110, 34, 17, stroke=0, fill=1)
     c.setFillColor(accent if not is_solution else INK)
-    c.setFont("Helvetica-Bold", 9)
+    c.setFont(BOLD_FONT, 9)
     c.drawCentredString(x + 79, y + h - 64, label)
 
     c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 20)
+    c.setFont(BOLD_FONT, 20)
     c.drawString(x + 24, y + h - 114, "What matters")
 
     bullets = item.get("bullets") or []
@@ -231,10 +282,10 @@ def draw_content_page(c: canvas.Canvas, page_num: int, data: dict, item: dict):
         c.setFillColor(light)
         c.circle(x + 34, cy + 4, 11, stroke=0, fill=1)
         c.setFillColor(INK)
-        c.setFont("Helvetica-Bold", 8)
+        c.setFont(BOLD_FONT, 8)
         c.drawCentredString(x + 34, cy + 1, str(idx))
         c.setFillColor(INK)
-        c.setFont("Helvetica-Bold", 13)
+        c.setFont(BOLD_FONT, 13)
         c.drawString(x + 58, cy, bullet)
 
     draw_footer(c, page_num, data.get("voice_url"), data.get("resources_url"))
@@ -246,18 +297,18 @@ def draw_final_page(c: canvas.Canvas, page_num: int, data: dict):
     c.rect(0, 0, W, H, stroke=0, fill=1)
     draw_header(c, data.get("project_label", "TASK REVIEW"), "FINAL LINKS")
     c.setFillColor(INK)
-    c.setFont("Helvetica-Bold", 30)
+    c.setFont(BOLD_FONT, 30)
     c.drawString(54, H - 112, "Final links")
-    c.setFont("Helvetica", 12.5)
+    c.setFont(REG_FONT, 12.5)
     c.drawString(54, H - 152, "Voice note and resources are attached for review.")
 
     cards = [("Voice note", data.get("voice_url")), ("Resources", data.get("resources_url"))]
     y = 450
     for title, url in cards:
-        draw_round_rect(c, 88, y, 436, 72, r=18, fill=colors.white, stroke=BORDER, sw=0.65)
-        draw_external_link_icon(c, 112, y + 31, size=13, bg=colors.white)
+        draw_round_rect(c, 88, y, 436, 72, r=18, fill=CARD, stroke=BORDER, sw=0.65)
+        draw_external_link_icon(c, 112, y + 31, size=13, bg=CARD)
         c.setFillColor(BLUE)
-        c.setFont("Helvetica-Bold", 16)
+        c.setFont(BOLD_FONT, 16)
         c.drawString(134, y + 31, title)
         if url:
             c.linkURL(url, (88, y, 524, y + 72), relative=0)
@@ -285,10 +336,15 @@ def render(data: dict, out_path: str):
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 3:
-        print("Usage: render_review_pdf.py content.json output.pdf", file=sys.stderr)
+    if len(argv) not in (3, 5):
+        print("Usage: render_review_pdf.py content.json output.pdf [--theme theme.json]", file=sys.stderr)
         return 2
     data = json.loads(Path(argv[1]).read_text())
+    if len(argv) == 5:
+        if argv[3] != "--theme":
+            print("Usage: render_review_pdf.py content.json output.pdf [--theme theme.json]", file=sys.stderr)
+            return 2
+        apply_theme(json.loads(Path(argv[4]).read_text()))
     out = render(data, argv[2])
     print(out)
     return 0
