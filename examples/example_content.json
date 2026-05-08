@@ -1,0 +1,44 @@
+{
+  "title": "Example Review PDF",
+  "project_label": "RUNCPM REVIEW",
+  "summary": "Review the request, show the main issue, and turn the fix into a clear visual handoff.",
+  "voice_url": "https://example.com/voice-note",
+  "resources_url": "https://example.com/resources",
+  "overview_rows": [
+    {
+      "label": "Audio link",
+      "value": "Click to review audio",
+      "type": "link",
+      "tone": "problem"
+    },
+    {
+      "label": "Original ask",
+      "value": "Review the flow and make the final PDF.",
+      "tone": "problem"
+    },
+    {
+      "label": "Main issue",
+      "value": "The current output is too text-heavy.",
+      "tone": "solution"
+    },
+    {
+      "label": "Final output",
+      "value": "Green pages show exactly what to build.",
+      "tone": "solution"
+    }
+  ],
+  "pages": [
+    {
+      "kind": "problem",
+      "title": "The old report is too heavy",
+      "body": "Readers should understand the issue in seconds, not paragraphs.",
+      "bullets": ["Too much text", "Weak visual hierarchy", "No clear next action"]
+    },
+    {
+      "kind": "solution",
+      "title": "Make it visual and simple",
+      "body": "Use one idea per page with pink problems and green fixes.",
+      "bullets": ["Short title", "One-sentence note", "Clear action card"]
+    }
+  ]
+}
