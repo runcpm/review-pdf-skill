@@ -262,6 +262,11 @@ Drive link:
 https://drive.google.com/file/d/.../view?usp=drivesdk
 ```
 
+See also:
+- `docs/hermes-integration-map.md` for full tool/skill dependencies.
+- `docs/theme-customization.md` for color/font changes without changing the layout.
+- `docs/quality-gate.md` for the mandatory final-outcome and template-compliance checklist.
+
 ## Mandatory QA Checklist
 
 Do not deliver until all pass:

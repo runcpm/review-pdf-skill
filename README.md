@@ -18,7 +18,8 @@ A visual-first review PDF with:
 - Clickable `Voice note` and `Resources` footer links
 - Drive upload/share link
 - Telegram-ready PDF delivery
-- Full visual QA before delivery
+- full visual QA before delivery
+- strict quality gate before delivery: real outcome complete, Page 1 overview/card/audio links present, every-page footer links present, contact-sheet QA passed
 
 ## Visual standard
 
@@ -47,6 +48,7 @@ The deck should look like this concept:
 - `docs/how-to-use.md` — usage guide for agents/users
 - `docs/hermes-integration-map.md` — every Hermes skill/tool area needed for the full workflow: Google/Drive, voice, internet search, Telegram, browser QA, code review, social/video, OCR/docs, and visual QA
 - `docs/theme-customization.md` — easy color/font customization while keeping the same template output
+- `docs/quality-gate.md` — mandatory template compliance and final-outcome QA checklist
 - `examples/example_theme.json` — default editable color/font theme
 
 ## How to use in Hermes
